@@ -585,7 +585,7 @@ function monochrome(imageData, threshold, type) {
 //-------------------------------------------------------------------------------------------------------------------------------------
 // Parameters as follows
 // BARCONTENT: STRING self expaining, but what is acceptes depends on the code type ( Aplphanumeric or numeric only ,  number of characters )
-// BARTYPE: INTEGER 65: UPC-A 66: UPC-B  67: EAN-13 68: EAN-8 69: Code39 70: Interleaved 2of5  71: Codabar 72: Code-39 73: Code-128 74: UCC/Ean-128
+// BARTYPE: INTEGER 65: UPC-A 66: UPC-B  67: EAN-13 68: EAN-8 69: Code39 70: Interleaved 2of5  71: Codabar 72: Code-93 73: Code-128 74: UCC/Ean-128
 // If Barcode Code 128 then the Barcode needs to start with {A, {B or {C
 // BARWIDTH: INTEGER range 2 to 6
 // BARHEIGHT: INTEGER range 1 to 255 (dots)
@@ -593,6 +593,8 @@ function monochrome(imageData, threshold, type) {
 // HRIPOSITION INTEGER 0: not printed , 1: above Code, 2: below Code, 3 above and below
 //-------------------------------------------------------------------------------------------------------------------------------------
 exports.ESCPOS_BARCODE = function barcode(ESCPOS_BARCONTENT, ESCPOS_BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION) {
+        if (!validateBarcode(ESCPOS_BARTYPE, ESCPOS_BARCONTENT))
+                return "INVALID BARCODE FORMAT";
         var output = "";
         var parametercommands = new Buffer(12);
         //barcode Height
@@ -632,9 +634,167 @@ exports.ESCPOS_BARCODE_CODE = {
         Code39: 69,
         Interleaved_2of5: 70,
         Codabar: 71,
-        Code_39: 72,
+        Code_93: 72,
         Code_128: 73,
         UCC_Ean_128: 74,
+}
+
+exports.MAKE_BARCODE = {
+        UPC_A: (ESCPOS_BARCONTENT, ESCPOS_BARWIDTH = 3, ESCPOS_BARHEIGHT = 80, ESCPOS_HRIFONT = 0, ESCPOS_HRIPOSITION = 2) => {
+                const BARTYPE = this.ESCPOS_BARCODE_CODE.UPC_A
+
+                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, ESCPOS_BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
+        },
+        UPC_B: (ESCPOS_BARCONTENT, ESCPOS_BARWIDTH = 3, ESCPOS_BARHEIGHT = 80, ESCPOS_HRIFONT = 0, ESCPOS_HRIPOSITION = 2) => {
+                const BARTYPE = this.ESCPOS_BARCODE_CODE.UPC_B
+
+                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, ESCPOS_BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
+        },
+        EAN_13: (ESCPOS_BARCONTENT, ESCPOS_BARWIDTH = 3, ESCPOS_BARHEIGHT = 80, ESCPOS_HRIFONT = 0, ESCPOS_HRIPOSITION = 2) => {
+                const BARTYPE = this.ESCPOS_BARCODE_CODE.EAN_13
+
+                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, ESCPOS_BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
+        },
+        EAN_8: (ESCPOS_BARCONTENT, ESCPOS_BARWIDTH = 3, ESCPOS_BARHEIGHT = 80, ESCPOS_HRIFONT = 0, ESCPOS_HRIPOSITION = 2) => {
+                const BARTYPE = this.ESCPOS_BARCODE_CODE.EAN_8
+
+                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, ESCPOS_BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
+        },
+        Code39: (ESCPOS_BARCONTENT, ESCPOS_BARWIDTH = 3, ESCPOS_BARHEIGHT = 80, ESCPOS_HRIFONT = 0, ESCPOS_HRIPOSITION = 2) => {
+                const BARTYPE = this.ESCPOS_BARCODE_CODE.Code39
+
+                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, ESCPOS_BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
+        },
+        Interleaved_2of5: (ESCPOS_BARCONTENT, ESCPOS_BARWIDTH = 3, ESCPOS_BARHEIGHT = 80, ESCPOS_HRIFONT = 0, ESCPOS_HRIPOSITION = 2) => {
+                const BARTYPE = this.ESCPOS_BARCODE_CODE.Interleaved_2of5
+
+                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, ESCPOS_BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
+        },
+        Codabar: (ESCPOS_BARCONTENT, ESCPOS_BARWIDTH = 3, ESCPOS_BARHEIGHT = 80, ESCPOS_HRIFONT = 0, ESCPOS_HRIPOSITION = 2) => {
+                const BARTYPE = this.ESCPOS_BARCODE_CODE.Codabar
+
+                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, ESCPOS_BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
+        },
+        Code_93: (ESCPOS_BARCONTENT, ESCPOS_BARWIDTH = 3, ESCPOS_BARHEIGHT = 80, ESCPOS_HRIFONT = 0, ESCPOS_HRIPOSITION = 2) => {
+                const BARTYPE = this.ESCPOS_BARCODE_CODE.Code93
+
+                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, ESCPOS_BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
+        },
+        Code_128: (ESCPOS_BARCONTENT, ESCPOS_BARWIDTH = 3, ESCPOS_BARHEIGHT = 80, ESCPOS_HRIFONT = 0, ESCPOS_HRIPOSITION = 2) => {
+                /*
+                Subset A supports numbers, upper-case letters, and control characters, such as tab and new-line.
+                Subset B supports numbers, upper- and lower-case letters and some additional characters.
+                Subset C supports numbers only. It must have an even number of digits.
+                */
+                ESCPOS_BARCONTENT = "{B" + ESCPOS_BARCONTENT
+                const BARTYPE = this.ESCPOS_BARCODE_CODE.Code_128
+
+                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
+        },
+
+        UCC_Ean_128: (ESCPOS_BARCONTENT, ESCPOS_BARWIDTH = 3, ESCPOS_BARHEIGHT = 80, ESCPOS_HRIFONT = 0, ESCPOS_HRIPOSITION = 2) => {
+                const BARTYPE = this.ESCPOS_BARCODE_CODE.UCC_Ean_128
+
+                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, ESCPOS_BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
+        },
+}
+// Validates a Barcode according to the rules found on https://www.epson-biz.com/modules/ref_escpos/index.php?content_id=128
+function validateBarcode(ESCPOS_BARTYPE, ESCPOS_BARCONTENT) {
+        switch (ESCPOS_BARTYPE) {
+                case "UPC_A":
+                case 65:
+                        if (ESCPOS_BARCONTENT.length != 11 && ESCPOS_BARCONTENT.length != 12)
+                                return false
+
+                        // Just allow numeric values
+                        if (!(/^[0-9]+$/.test(ESCPOS_BARCONTENT)))
+                                return false
+                        break
+                case "UPC_B":
+                case 66:
+                        if (!(ESCPOS_BARCONTENT.length >= 6 && ESCPOS_BARCONTENT.length <= 8) && ESCPOS_BARCONTENT.length != 11 && ESCPOS_BARCONTENT.length != 12)
+                                return false
+
+                        // Just allow numeric values
+                        if (!(/^[0-9]+$/.test(ESCPOS_BARCONTENT)))
+                                return false
+                        break
+                case "EAN_13":
+                case 67:
+                        if (ESCPOS_BARCONTENT.length != 12 && ESCPOS_BARCONTENT.length != 13)
+                                return false
+
+                        // Just allow numeric values
+                        if (!(/^[0-9]+$/.test(ESCPOS_BARCONTENT)))
+                                return false
+                        break
+                case "EAN_8":
+                case 68:
+                        if (ESCPOS_BARCONTENT.length != 7 && ESCPOS_BARCONTENT.length != 8)
+                                return false
+
+                        // Just allow numeric values
+                        if (!(/^[0-9]+$/.test(ESCPOS_BARCONTENT)))
+                                return false
+                        break
+                case "Code39":
+                case 69:
+                        if (!(ESCPOS_BARCONTENT.length >= 1 && ESCPOS_BARCONTENT.length <= 255))
+                                return false
+
+                        // 0 – 9, A – Z, SP, $, %, *, +, -, ., /
+                        if (!(/^[0-9A-Z $%*+-./]+$/.test(ESCPOS_BARCONTENT)))
+                                return false
+
+                        break
+                case "Interleaved_2of5":
+                case 70:
+                        if (ESCPOS_BARCONTENT.length % 2 !== 0 || !(ESCPOS_BARCONTENT.length >= 2 && ESCPOS_BARCONTENT.length <= 254))
+                                return false
+                        // Just allow numeric values
+                        if (!(/^[0-9]+$/.test(ESCPOS_BARCONTENT)))
+                                return false
+                        break
+                case "Codabar":
+                case 71:
+                        if (!(ESCPOS_BARCONTENT.length >= 2 && ESCPOS_BARCONTENT.length <= 255))
+                                return false
+
+                        // 0 – 9, A – D, a – d, $, +, −, ., /, :
+                        if (!(/^[0-9A-Da-d $+-./:]+$/.test(ESCPOS_BARCONTENT)))
+                                return false
+                        break
+                case "Code_93":
+                case 72:
+                        if (!(ESCPOS_BARCONTENT.length >= 2 && ESCPOS_BARCONTENT.length <= 255))
+                                return false
+
+                        // all ascii
+                        if (!(/^[\x00-\x7F]+$/.test(ESCPOS_BARCONTENT)))
+                                return false
+
+                case "Code_128":
+                case 73:
+                        if (!(ESCPOS_BARCONTENT.length >= 2 && ESCPOS_BARCONTENT.length <= 255))
+                                return false
+
+                        // all ascii but starting with either {A|{B|{C
+                        if (!(/^({A|{B|{C)[\x00-\x7F]+$/.test(ESCPOS_BARCONTENT)))
+                                return false
+                        break
+                case "UCC_Ean_128":
+                case 74:
+                        if (!(ESCPOS_BARCONTENT.length >= 2 && ESCPOS_BARCONTENT.length <= 255))
+                                return false
+
+                        // all ascii
+                        if (!(/^[\x00-\x7F]+$/.test(ESCPOS_BARCONTENT)))
+                                return false
+                        break
+                default:
+                        return true
+                        break;
+        }
 }
 //=====================================================================================================================================
 //ESCPOS_QRCODE
