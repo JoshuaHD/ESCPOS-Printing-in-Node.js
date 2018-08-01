@@ -1,5 +1,5 @@
 //======================================================================================================================================================
-// escpos_printing.js Version: 1.0.0 by Thomas Höbelt
+// Fork of escpos_printing.js Version: 1.0.0 by Thomas Höbelt
 //------------------------------------------------------------------------------------------------------------------------------------------------------
 // This is my implementation of ESCPOS Printing from within node nw.js applications
 // ADVANTAGE nothing else needed i.e. no dependencies except built in modules:
