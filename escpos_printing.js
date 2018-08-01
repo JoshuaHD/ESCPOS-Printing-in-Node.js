@@ -585,6 +585,7 @@ for (var i=0; i<256; i++) {
 // Parameters as follows
 // BARCONTENT: STRING self expaining, but what is acceptes depends on the code type ( Aplphanumeric or numeric only ,  number of characters )
 // BARTYPE: INTEGER 65: UPC-A 66: UPC-B  67: EAN-13 68: EAN-8 69: Code39 70: Interleaved 2of5  71: Codabar 72: Code-39 73: Code-128 74: UCC/Ean-128
+// If Barcode Code 128 then the Barcode needs to start with {A, {B or {C
 // BARWIDTH: INTEGER range 2 to 6
 // BARHEIGHT: INTEGER range 1 to 255 (dots)
 // HRFONT 0 for Printerfont A, 1 for Printerfont B
@@ -621,7 +622,19 @@ output = parametercommands.toString('utf8')+printcommand.toString('utf8')+ESCPOS
 return output;
 }
 //=====================================================================================================================================
-
+// Return barcode codes by name
+exports.ESCPOS_BARCODE_CODE = {
+        UPC_A            : 65,
+        UPC_B            : 66,
+        EAN_13           : 67,
+        EAN_8            : 68,
+        Code39           : 69,
+        Interleaved_2of5 : 70,
+        Codabar          : 71,
+        Code_39          : 72,
+        Code_128         : 73,
+        UCC_Ean_128      : 74,
+}
 //=====================================================================================================================================
 //ESCPOS_QRCODE
 // Delivers a well formatted ESCPOS String containing all necessary command and content information for QR Codes
