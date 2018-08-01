@@ -317,7 +317,12 @@ exports.ESCPOS_CMD = {
                 var command = new Buffer('1B33'+("00"+units.toString(16)).slice(-2),'hex').toString('utf8');
                 return command;
         },
-        LINE_SPACE_DEFAULT: new Buffer('1B32','hex').toString('utf8')
+        LINE_SPACE_DEFAULT: new Buffer('1B32','hex').toString('utf8'),
+        
+        OPEN_DRAWER_1: new Buffer('1B700019', 'hex').toString('utf8'), // Open Cashdrawer 1
+        OPEN_DRAWER_1b: new Buffer('1B703019', 'hex').toString('utf8'), // Open Cashdrawer 1 EPSON version 2, try this if the first version does not work
+        OPEN_DRAWER_2: new Buffer('1B700119', 'hex').toString('utf8'), // Open Cashdrawer 2
+        OPEN_DRAWER_2b: new Buffer('1B703119', 'hex').toString('utf8'), // Open Cashdrawer 2 EPSON version 2, try this if the first version does not work
         
 }
 //=====================================================================================================================================
