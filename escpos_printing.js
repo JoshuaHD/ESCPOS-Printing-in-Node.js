@@ -686,8 +686,10 @@ exports.MAKE_BARCODE = {
                 Subset B supports numbers, upper- and lower-case letters and some additional characters.
                 Subset C supports numbers only. It must have an even number of digits.
                 */
-                ESCPOS_BARCONTENT = "{B" + ESCPOS_BARCONTENT
                 const BARTYPE = this.ESCPOS_BARCODE_CODE.Code_128
+                
+                let type = (/^({A|{B|{C)$/.test(ESCPOS_BARCONTENT.substr(0, 2))) ?  '' : "{B"
+                ESCPOS_BARCONTENT = type + ESCPOS_BARCONTENT
 
                 return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
         },
@@ -777,6 +779,17 @@ function validateBarcode(ESCPOS_BARTYPE, ESCPOS_BARCONTENT) {
                 case 73:
                         if (!(ESCPOS_BARCONTENT.length >= 2 && ESCPOS_BARCONTENT.length <= 255))
                                 return false
+
+                        let type = ESCPOS_BARCONTENT.substr(0, 2)
+
+                        switch(type) {
+                                case "{C":
+                                        // Supports pairs of numbers
+                                        // Just allow numeric values
+                        if (!(/^({C)[0-9]+$/.test(ESCPOS_BARCONTENT)))
+                        return false
+                                        break
+                        }
 
                         // all ascii but starting with either {A|{B|{C
                         if (!(/^({A|{B|{C)[\x00-\x7F]+$/.test(ESCPOS_BARCONTENT)))
