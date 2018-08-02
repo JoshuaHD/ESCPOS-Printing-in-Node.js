@@ -116,7 +116,12 @@ exports.testPrintBarcodes = function () {
 
     this.printFromArray(lines)
 }
+/*
+ context is the window where the canvas for the images is drawn.
+ pathToImage is where the test images are located
 
+ example call: printAllTests(this.window, './node_modules/pos-print/')
+*/
 exports.printAllTests = function (context, pathToImage) {
     this.testPrintText()
     this.testPrintQrCodes()
