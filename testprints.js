@@ -27,7 +27,32 @@ exports.testPrintText = function () {
 
     this.printFromArray(lines)
 }
+exports.testPrintImages = async function (context, pathToImage = '') {
+    let lines = []
+    lines.push("JPG print\n")
+    lines.push(await Printer.ESCPOS_IMAGEFILE(context, pathToImage + 'escposimage.jpg', 33, true, 127));
+    lines.push("BMP print\n")
+    lines.push(await Printer.ESCPOS_IMAGEFILE(context, pathToImage + 'escposimage.bmp', 33, true, 127));
+    lines.push("GIF print\n")
+    lines.push(await Printer.ESCPOS_IMAGEFILE(context, pathToImage + 'escposimage.gif', 33, true, 127));
+    
+    lines.push(Printer.ESCPOS_CMD.CENTER)
+    lines.push("JPG print center\n")
+    lines.push(await Printer.ESCPOS_IMAGEFILE(context, pathToImage + 'escposimage.jpg', 33, true, 127));
+    
+    lines.push(Printer.ESCPOS_CMD.RIGHT)
+    lines.push("JPG print right\n")
+    lines.push(await Printer.ESCPOS_IMAGEFILE(context, pathToImage + 'escposimage.jpg', 33, true, 127));
+    
+    lines.push(Printer.ESCPOS_CMD.CENTER)
+    lines.push("100% Black square - JPG print center\n")
+    lines.push(await Printer.ESCPOS_IMAGEFILE(context, pathToImage + 'square.jpg', 33, true, 127));
 
+    lines.push("100% Black square - BMP print center\n")
+    lines.push(await Printer.ESCPOS_IMAGEFILE(context, pathToImage + 'square.bmp', 33, true, 127));
+
+    this.printFromArray(lines)
+}
 exports.testPrintQrCodes = function () {
     let lines = []
     lines.push("Model 1 QR Code should open google.com\n")
@@ -92,8 +117,9 @@ exports.testPrintBarcodes = function () {
     this.printFromArray(lines)
 }
 
-exports.printAllTests = function () {
+exports.printAllTests = function (context, pathToImage) {
     this.testPrintText()
     this.testPrintQrCodes()
     this.testPrintBarcodes()
+    this.testPrintImages(context, pathToImage)
 }

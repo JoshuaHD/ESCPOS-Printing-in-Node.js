@@ -65,6 +65,14 @@ exports.ESCPOS_LASTERROR = "";
 var ESCPOS_RESULT = "";
 //=======================================================================================================================================================
 
+exports.test = function () {
+        var showit = "Sucessfully running escpos_printing !!!\nAvailable vars and functions: \n"
+        for (var key in exports) {
+                showit = showit + key + "\n";
+        }
+        console.log(showit);
+        return showit
+}
 
 //=======================================================================================================================================================
 //ESCPOS_INIT
@@ -331,6 +339,10 @@ exports.ESCPOS_CMD = {
 //=====================================================================================================================================
 //ESCPOS_IMAGEFILE
 // Delivers a well formatted ESCPOS String containing all necessary command and the image data from a given fully qualified filename jpg,bmp,gif,svg supported
+//
+// The after printing the function resets the printers line spacing the printer default value. You might want to set the linespacing 
+// again after calling this function if you use a custom line spacing
+//
 //-------------------------------------------------------------------------------------------------------------------------------------
 // Parameters are the following
 // mothetcontext : VERY IMPORTANT !! here you have to supply the calling functions Browser-context window (this.window)
@@ -345,7 +357,7 @@ exports.ESCPOS_CMD = {
 //IMGTHRESHOLD: INTEGER (1 to255 practical value is 127) used for simple b/w decision and as a threshold in the dithering part
 //-------------------------------------------------------------------------------------------------------------------------------------
 
-exports.ESCPOS_IMAGEFILE = function (mothercontext, ESCPOS_FILENAME, ESCPOS_IMGMODE, ESCPOS_DITHER, ESCPOS_IMGTHRESHOLD) {
+exports.ESCPOS_IMAGEFILE = async function (mothercontext, ESCPOS_FILENAME, ESCPOS_IMGMODE, ESCPOS_DITHER, ESCPOS_IMGTHRESHOLD) {
 
         // as we are dealing with a canvas we need to prefix it with the correspondant mime-string
         var ESCPOS_extension = ESCPOS_FILENAME.substr(ESCPOS_FILENAME.lastIndexOf('.') + 1)
@@ -374,9 +386,16 @@ exports.ESCPOS_IMAGEFILE = function (mothercontext, ESCPOS_FILENAME, ESCPOS_IMGM
         // now we load the file synchronously !!! and draw it to an canvas of the calling i.e. mother context
         var ESCPOS_imagesource = new mothercontext.Image();
         ESCPOS_imagesource.src = ESCPOS_mimestring + fileSys.readFileSync(ESCPOS_FILENAME).toString("base64");
+        function loadImage() {
+                return new Promise(resolve => {
+                        ESCPOS_imagesource.onload = () => { resolve('image loaded'); }
+                }).catch((err) => { console.error(err); })
+        }
+        var result = await loadImage();
         var ESCPOS_canvas = mothercontext.document.createElement('canvas');
         ESCPOS_canvas.setAttribute('width', ESCPOS_imagesource.width);
         ESCPOS_canvas.setAttribute('height', ESCPOS_imagesource.height);
+
         var ESCPOS_context = ESCPOS_canvas.getContext('2d');
         ESCPOS_context.drawImage(ESCPOS_imagesource, 0, 0);
 
@@ -398,6 +417,9 @@ exports.ESCPOS_IMAGEFILE = function (mothercontext, ESCPOS_FILENAME, ESCPOS_IMGM
         var ESCPOS_pixeltreshold = ESCPOS_IMGTHRESHOLD;
         // what we want to produce
         var ESCPOS_output = "";
+
+        // Set the linehight to 0 to avoid lines between the image
+        ESCPOS_output = this.ESCPOS_CMD.LINE_SPACE(0)
 
         //create the appropriate command and set the line height (internal parameter)  in pixels;
         switch (ESCPOS_IMGMODE) {
@@ -467,15 +489,15 @@ exports.ESCPOS_IMAGEFILE = function (mothercontext, ESCPOS_FILENAME, ESCPOS_IMGM
                         }
                         // finally convert our bitwise literals into bytes
                         //if we are in 8 pixel mode one byte is enough
-                        ESCPOS_pixeldata[0] = parseInt(ESCPOS_bytestring.substring(0, 7), 2);
+                        ESCPOS_pixeldata[0] = parseInt(ESCPOS_bytestring.substr(0, 8), 2);
                         // if we process 24 pixels we need three bytes and have initialized the buffer to 3 instead of 1
                         if (ESCPOS_pixeldata.length > 1) {
-                                ESCPOS_pixeldata[1] = parseInt(ESCPOS_bytestring.substring(8, 15), 2);
-                                ESCPOS_pixeldata[2] = parseInt(ESCPOS_bytestring.substring(16, 23), 2);
+                                ESCPOS_pixeldata[1] = parseInt(ESCPOS_bytestring.substr(8, 8), 2);
+                                ESCPOS_pixeldata[2] = parseInt(ESCPOS_bytestring.substr(15, 8), 2);
                         }
 
                         // add this column of pixels to the line result string
-                        ESCPOS_onelinedata = ESCPOS_onelinedata + ESCPOS_pixeldata.toString('ascii');
+                        ESCPOS_onelinedata = ESCPOS_onelinedata + ESCPOS_pixeldata.toString('binary');
                         // now we have to move back the whole way minus one pixel to get to the top of the next column
                         ESCPOS_pixeldataoffset = ESCPOS_pixeldataoffset - ((ESCPOS_canvas.width * 4 * ESCPOS_verticalslicesize) - 4);
                 }
@@ -488,6 +510,8 @@ exports.ESCPOS_IMAGEFILE = function (mothercontext, ESCPOS_FILENAME, ESCPOS_IMGM
                 ESCPOS_pixeldataoffset = ESCPOS_pixeldataoffset + (ESCPOS_canvas.width * 4 * ESCPOS_verticalslicesize);
         }
 
+        //Reset the line space to the printers default setting
+        ESCPOS_output = ESCPOS_output + this.ESCPOS_CMD.LINE_SPACE_DEFAULT
 
         return ESCPOS_output;
 
