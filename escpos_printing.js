@@ -594,7 +594,8 @@ function monochrome(imageData, threshold, type) {
 //-------------------------------------------------------------------------------------------------------------------------------------
 exports.ESCPOS_BARCODE = function barcode(ESCPOS_BARCONTENT, ESCPOS_BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION) {
         if (!validateBarcode(ESCPOS_BARTYPE, ESCPOS_BARCONTENT))
-                return "INVALID BARCODE FORMAT";
+                return "INVALID BARCODE FORMAT\n" + ESCPOS_BARCONTENT + "\n";
+
         var output = "";
         var parametercommands = new Buffer(12);
         //barcode Height
@@ -643,42 +644,42 @@ exports.MAKE_BARCODE = {
         UPC_A: (ESCPOS_BARCONTENT, ESCPOS_BARWIDTH = 3, ESCPOS_BARHEIGHT = 80, ESCPOS_HRIFONT = 0, ESCPOS_HRIPOSITION = 2) => {
                 const BARTYPE = this.ESCPOS_BARCODE_CODE.UPC_A
 
-                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, ESCPOS_BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
+                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
         },
         UPC_B: (ESCPOS_BARCONTENT, ESCPOS_BARWIDTH = 3, ESCPOS_BARHEIGHT = 80, ESCPOS_HRIFONT = 0, ESCPOS_HRIPOSITION = 2) => {
                 const BARTYPE = this.ESCPOS_BARCODE_CODE.UPC_B
 
-                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, ESCPOS_BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
+                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
         },
         EAN_13: (ESCPOS_BARCONTENT, ESCPOS_BARWIDTH = 3, ESCPOS_BARHEIGHT = 80, ESCPOS_HRIFONT = 0, ESCPOS_HRIPOSITION = 2) => {
                 const BARTYPE = this.ESCPOS_BARCODE_CODE.EAN_13
 
-                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, ESCPOS_BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
+                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
         },
         EAN_8: (ESCPOS_BARCONTENT, ESCPOS_BARWIDTH = 3, ESCPOS_BARHEIGHT = 80, ESCPOS_HRIFONT = 0, ESCPOS_HRIPOSITION = 2) => {
                 const BARTYPE = this.ESCPOS_BARCODE_CODE.EAN_8
 
-                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, ESCPOS_BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
+                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
         },
         Code39: (ESCPOS_BARCONTENT, ESCPOS_BARWIDTH = 3, ESCPOS_BARHEIGHT = 80, ESCPOS_HRIFONT = 0, ESCPOS_HRIPOSITION = 2) => {
                 const BARTYPE = this.ESCPOS_BARCODE_CODE.Code39
 
-                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, ESCPOS_BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
+                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
         },
         Interleaved_2of5: (ESCPOS_BARCONTENT, ESCPOS_BARWIDTH = 3, ESCPOS_BARHEIGHT = 80, ESCPOS_HRIFONT = 0, ESCPOS_HRIPOSITION = 2) => {
                 const BARTYPE = this.ESCPOS_BARCODE_CODE.Interleaved_2of5
 
-                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, ESCPOS_BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
+                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
         },
         Codabar: (ESCPOS_BARCONTENT, ESCPOS_BARWIDTH = 3, ESCPOS_BARHEIGHT = 80, ESCPOS_HRIFONT = 0, ESCPOS_HRIPOSITION = 2) => {
                 const BARTYPE = this.ESCPOS_BARCODE_CODE.Codabar
 
-                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, ESCPOS_BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
+                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
         },
         Code_93: (ESCPOS_BARCONTENT, ESCPOS_BARWIDTH = 3, ESCPOS_BARHEIGHT = 80, ESCPOS_HRIFONT = 0, ESCPOS_HRIPOSITION = 2) => {
                 const BARTYPE = this.ESCPOS_BARCODE_CODE.Code93
 
-                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, ESCPOS_BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
+                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
         },
         Code_128: (ESCPOS_BARCONTENT, ESCPOS_BARWIDTH = 3, ESCPOS_BARHEIGHT = 80, ESCPOS_HRIFONT = 0, ESCPOS_HRIPOSITION = 2) => {
                 /*
@@ -687,8 +688,8 @@ exports.MAKE_BARCODE = {
                 Subset C supports numbers only. It must have an even number of digits.
                 */
                 const BARTYPE = this.ESCPOS_BARCODE_CODE.Code_128
-                
-                let type = (/^({A|{B|{C)$/.test(ESCPOS_BARCONTENT.substr(0, 2))) ?  '' : "{B"
+
+                let type = (/^({A|{B|{C)$/.test(ESCPOS_BARCONTENT.substr(0, 2))) ? '' : "{B"
                 ESCPOS_BARCONTENT = type + ESCPOS_BARCONTENT
 
                 return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
@@ -697,7 +698,7 @@ exports.MAKE_BARCODE = {
         UCC_Ean_128: (ESCPOS_BARCONTENT, ESCPOS_BARWIDTH = 3, ESCPOS_BARHEIGHT = 80, ESCPOS_HRIFONT = 0, ESCPOS_HRIPOSITION = 2) => {
                 const BARTYPE = this.ESCPOS_BARCODE_CODE.UCC_Ean_128
 
-                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, ESCPOS_BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
+                return this.ESCPOS_BARCODE(ESCPOS_BARCONTENT, BARTYPE, ESCPOS_BARWIDTH, ESCPOS_BARHEIGHT, ESCPOS_HRIFONT, ESCPOS_HRIPOSITION)
         },
 }
 // Validates a Barcode according to the rules found on https://www.epson-biz.com/modules/ref_escpos/index.php?content_id=128
@@ -782,15 +783,6 @@ function validateBarcode(ESCPOS_BARTYPE, ESCPOS_BARCONTENT) {
 
                         let type = ESCPOS_BARCONTENT.substr(0, 2)
 
-                        switch(type) {
-                                case "{C":
-                                        // Supports pairs of numbers
-                                        // Just allow numeric values
-                        if (!(/^({C)[0-9]+$/.test(ESCPOS_BARCONTENT)))
-                        return false
-                                        break
-                        }
-
                         // all ascii but starting with either {A|{B|{C
                         if (!(/^({A|{B|{C)[\x00-\x7F]+$/.test(ESCPOS_BARCONTENT)))
                                 return false
@@ -808,6 +800,8 @@ function validateBarcode(ESCPOS_BARTYPE, ESCPOS_BARCONTENT) {
                         return true
                         break;
         }
+
+        return true
 }
 //=====================================================================================================================================
 //ESCPOS_QRCODE
