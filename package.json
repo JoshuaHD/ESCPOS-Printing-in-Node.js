@@ -1,27 +1,26 @@
 {
-  "name": "ESCPOS",
+  "name": "pos-print",
   "version": "1.1.1",
-  "author": "Thomas Höbelt",
-  "description": "EscPOS Printing from nw.js no strings attached",
+  "author": "Thomas Höbelt, JoshuaHD",
+  "description": "EscPOS Printing from electron no strings attached. Forked and extended based on code from Thomas Höbelt https://github.com/treh1966/ESCPOS-Printing-in-Node.js",
   "keywords": [
-    "demo",
     "ESCPOS",
-    "ad-min"
+    "print",
+    "electron",
+    "thermal printer"
   ],
   "main": "index.html",
   "window": {
     "width": 800,
     "height": 600,
-    "title": "ESCPOS by Thomas Höbelt",
+    "title": "EscPOS Printing from Electron",
     "toolbar": true,
     "frame": true,
     "fullscreen": false,
     "kiosk": false
   },
   "maintainers":[ {
-    "name": "Thomas Höbelt",
-    "email": "registrierkassa@ad-min.at",
-    "web": "http://ad-min.at/kassa/index.html"
+    "name": "JoshuaHD"
   }],
   "licenses": [ {
        "type": "MIT",
@@ -29,6 +28,6 @@
    }],
   "repositories": [ {
     "type": "git", 
-    "url": "https://github.com/treh1966/ESCPOS-Printing-in-Node.js"
+    "url": "https://github.com/JoshuaHD/ESCPOS-Printing-in-Node.js"
   }]
  }
