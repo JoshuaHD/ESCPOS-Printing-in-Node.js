@@ -1,7 +1,7 @@
 Printer = require('./escpos_printing.js');
 
 // SET This to the shared name of your printer
-exports.selectedPrinter = 'GPRINTER'
+exports.selectedPrinter = ''
 
 exports.printFromArray = function printFromArray(printlines, cut = true) {
     Printer.ESCPOS_INIT();
